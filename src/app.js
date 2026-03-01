@@ -9,4 +9,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(cookieParser());
 
+// Import  Routes
+
+const userRoute = require("./routes/user.routes");
+
+// Routes middleware
+
+app.use("/api/v1/users", userRoute);
+
 module.exports = app;

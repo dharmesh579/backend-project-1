@@ -1,6 +1,9 @@
 const User = require("../models/user.model.js");
 const ApiError = require("../utils/ApiError.js");
-const uploadOnCloudinary = require("../utils/cloudinary");
+const {
+  uploadOnCloudinary,
+  deleteFromCloudinary,
+} = require("../utils/cloudinary");
 const ApiResponse = require("../utils/ApiResponse.js");
 const asyncHandler = require("../utils/asyncHandler.js");
 const jwt = require("jsonwebtoken");
@@ -254,6 +257,9 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Avatar file is missing");
   }
 
+  if (req.user?.avatarPublicId) {
+    await deleteFromCloudinary(req.user.avatarPublicId);
+  }
   const avatar = await uploadOnCloudinary(avatarLocalPath);
 
   if (!avatar.url) {
@@ -281,6 +287,9 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
 
   if (!coverImageLocalPath) {
     throw new ApiError(400, "CoverImage is missing");
+  }
+  if (req.user?.coverImagePublicId) {
+    await deleteFromCloudinary(req.user.coverImagePublicId);
   }
 
   const coverImage = await uploadOnCloudinary(coverImageLocalPath);

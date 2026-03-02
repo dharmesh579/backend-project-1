@@ -3,6 +3,12 @@ const {
   registerUser,
   loginUser,
   logoutUser,
+  refreshAccessToken,
+  changeCurrentPassword,
+  getCurrentUser,
+  updateAccountDetails,
+  updateUserAvatar,
+  updateUserCoverImage,
 } = require("../controllers/user.controller.js");
 const router = express.Router();
 const upload = require("../middlewares/multer.middleware.js");
@@ -18,5 +24,21 @@ router.post(
 );
 router.post("/login", loginUser);
 router.post("/logout", verifyJWT, logoutUser);
+router.post("/refresh", refreshAccessToken);
+router.post("/change-password", verifyJWT, changeCurrentPassword);
+router.get("/current-user", verifyJWT, getCurrentUser);
+router.patch("/update-account-details", verifyJWT, updateAccountDetails);
+router.patch(
+  "/update-avatar",
+  verifyJWT,
+  upload.single("avatar"),
+  updateUserAvatar,
+);
+router.patch(
+  "/update-cover-image",
+  verifyJWT,
+  upload.single("coverImage"),
+  updateUserCoverImage,
+);  
 
 module.exports = router;

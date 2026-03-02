@@ -32,6 +32,8 @@ const userSchema = mongoose.Schema(
       required: true,
     },
     coverImage: String,
+    avatarPublicId : String,
+    coverImagePublicId : String,
     refreshToken: String,
     watchHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
   },
